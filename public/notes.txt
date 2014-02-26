@@ -1,0 +1,33 @@
+Examples to Learn From:
+
+-Phaser's Official First Game Tutorial
+-Phaser Examples
+	-Basic: Image follows input
+	-Game: Tanks
+	-Input
+		Follow Mouse
+		Keyboard Hotkeys
+	-Physics
+		Move Towards Object
+		Multi Angle to Pointer
+	-Camera
+		Moving the Camera
+		World Sprite	
+	-World: Move around World
+
+
+-Flappy Bird Clone Example
+-Phaser Pong Example
+-Zombies Examples
+
+-In Docs
+	Camera
+	Input
+		Phaser.pointer
+		Phaser.mouse
+
+
+
+Notes:
+	Difference between Collision and Overlap physics
+	bounding box for camera

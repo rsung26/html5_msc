@@ -1,0 +1,58 @@
+TITLE: The HTML5 Marine Split Challenge
+GOAL: Recreate the SC2 Arcade Map "Marine Split Challenge" as an HTML 5 browser game.
+
+FEATURES:
+-Canvas
+  -Size is greater than the window size
+
+-Units
+  -Can be Selected
+  -Can Move
+  -Can Attack (damage, range, animation, speed)
+  -Can Attack Move
+  -Has Health
+  -Types
+	-Marine: Ranged Instant Attack
+  	-Baneling
+	  -Melee range, dies on contact
+	  -Exploding AOE on death
+
+-Inputs
+  -Mouse on Border: Move Camera in 8 possible directions
+  -Left Click: Select a Marine
+  -Hold Left Click and Release: Select one or more Marines
+  -Selected?
+  	-Right Click: Move Marine(s) to clicked location
+  	-A Key and Left Click: Attack Move Marnine(s)
+
+-Game	
+  -Rounds: reset units and camera
+  -Score: keeps track of surviving Marines
+  -Prep Time: Increase/Decrease time before Banelings Attack
+  -Banelings spawn from one of four random positions
+		
+
+Technologies:
+-HTML5/Javascript/CSS3
+-Node or Rails Server
+-PhaserJS Framework
+
+
+Benchmarks:
+	1. An Empty HTML Canvas that has camera movement
+	2. PNG assets to be used
+	3. Phase objects and Model Structure complete
+
+	4. A Single Unit with all properties on canvas
+
+	5. A Group of Units with specified properties on canvas
+
+	6. Marine/Baneling unit types established
+	7. Game related features implemented
+	--- Minimum Viable Product ---
+
+
+
+
+
+
