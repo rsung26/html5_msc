@@ -1,0 +1,24 @@
+
+
+Day 1
+
+What I did
+-Implemented background and map size on canvas
+-Implemented basic camera controls for arrows and mouse
+-Implemented a single marine unit
+-Created a marine group with basic collisions with itself
+
+-Experimented with unit selection and right click movement
+-Played around with mutli group selection
+
+Problems I encountered 
+-Phaser's limiations on mouse controls and interactions
+-Mutliple selection on groups not working with intended solution
+-How to strucutre code: do I need a Marine Model?
+
+What I plan to accomplish today
+-Judgement Call: Do I restructure my specs to fit the technology in the framework?
+			
+				 Do I try to implemented a custom solution to satisfy specs?
+
+-
