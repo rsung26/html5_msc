@@ -51,38 +51,50 @@ function createBanelings() {
 }
 
 function checkNextRound() {
-
     if (marines.countLiving() == 0) {
-        prompt_text.content = "GAME OVER";
+        prompt_text.content = "No More Marines";
+        restart();
     }
-
-    if( banelings.countLiving() == 0 && marines.countLiving()  ) {
+    if( banelings.countLiving() == 0 && marines.countLiving() ) {
+        prompt_text.content = "Next Round...";
         advanceRound();
     }
 }
 
-function restart() {
-    console.log("Game should restart");
-    marines.removeAll();
-    banelings.removeAll();
-    explosions.removeAll();
-    destoryAllText();
-
-    createMarines();
-    createBanelings();
-    createExplosions();
-    createText();
-}
-
 function advanceRound() {
-    prompt_text.content = "Advanced to Next Round!";
+    console.log("advanceRound being called");
     round += 1;
-    score += marines.countLiving();
-
+    score += marines.countLiving() - 1;
+    console.log(round);
+    console.log(score);
     score_text.content = "Score: " + score;
     round_text.content = "Round: " + round;
-
+    restart();
 }
+
+function restart() {
+    console.log("Game should restart");
+
+    // marines.removeAll();
+    // banelings.removeAll();
+    // explosions.removeAll();
+
+    // createMarines();
+    // createBanelings();
+    // createExplosions();
+
+
+    // round_text.destroy();
+    // score_text.destroy();
+    // timewarp_text.destroy();
+    // prompt_text.destroy();
+
+    // createText();
+
+    create();
+}
+
+
 
 function createExplosions() {
     for (var i = 0; i < 4; i++) {
@@ -111,9 +123,9 @@ function createText() {
 
 function destoryAllText() {
     round_text.destroy();
-    score_text.destory();
-    timewarp_text.destory();
-    prompt_text.destory();
+    score_text.destroy();
+    timewarp_text.destroy();
+    prompt_text.destroy();
 }
 
 function selected(sprite, pointer) {
