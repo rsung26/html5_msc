@@ -1,5 +1,3 @@
-
-
 Day 1
 
 What I did
@@ -21,4 +19,21 @@ What I plan to accomplish today
 			
 				 Do I try to implemented a custom solution to satisfy specs?
 
--
+
+
+Day 2
+
+What I did
+-Code Refactor for Marines
+-Researched on using Fabric.js to implement drag selection
+-implemented Banelings and Explosions group
+-Worked on basic collisions/interactions between banelings and marines
+
+Problems
+-The judgement call on the important of drag selection 
+-Directing banelings to move intelligently
+
+
+
+
+
