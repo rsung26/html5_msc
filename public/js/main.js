@@ -1,4 +1,3 @@
-// Initialize Phaser, and creates a 400x490px game
 var game = new Phaser.Game(800, 600, Phaser.AUTO, 'game', { preload: preload, create: create, update: update, render: render });
 
 var background;
@@ -6,8 +5,17 @@ var cursors;
 var clickedx, clickedy;
 
 var marines, banelings, explosions;
+var banelings_on_screen;
+
+var round_text, score_text, prompt_text, timewarp_text;
+var round, score, num_timewarp;
+
+var time_warp_button, restart_button;
+
+
 
 function createMarines() {
+
     for(var y = 0; y < 4; y++) {
         for(var x = 0; x < 4; x++) {
             var marine = marines.create(x * 35, y * 35, 'marine');
@@ -20,6 +28,7 @@ function createMarines() {
             marine.events.onInputDown.add(selected, this);
         }
     }   
+
     marines.x = game.world.centerX - 70;
     marines.y = game.world.centerY - 70;
     marines.setAll('body.collideWorldBounds', true);
@@ -27,26 +36,44 @@ function createMarines() {
 }
 
 function createBanelings() {
-    banelings.createMultiple(20, 'baneling');  
+
+    banelings.createMultiple(100, 'baneling');  
     banelings.setAll('anchor.x', 0.5);
     banelings.setAll('anchor.y', 0.5);
-
     banelings.setAll('outOfBoundsKill', true);
 
-    for(var i = 0; i < 10; i ++) { 
+    for(var i = 0; i < 4; i ++) { 
         var baneling = banelings.getFirstDead(); 
-        baneling.reset(0, i * 30 - 100);
+        baneling.reset(0, i * 30);
 
-        this.game.physics.moveToObject(baneling, marines, 100)
+        this.game.physics.moveToObject(baneling, marines, 50)
     }
 }
 
 function createExplosions() {
-    for (var i = 0; i < 5; i++) {
+
+    for (var i = 0; i < 4; i++) {
         var explosionAnimation = explosions.create(0, 0, 'boom', [0], false);
         explosionAnimation.anchor.setTo(0.5, 0.5);
         explosionAnimation.animations.add('boom');
     }
+}
+
+function createText() {
+    round = 1;
+    round_text = game.add.text(50, 25, "Round:" + round, { font: "24px Arial", fill: "#ff0044" });
+    round_text.anchor.setTo(0.5, 0.5);
+
+    score = 0;
+    score_text = game.add.text(200, 25, "Score:" + score, { font: "24px Arial", fill: "#ff0044" });
+    score_text.anchor.setTo(0.5, 0.5);
+
+    num_timewarp = 3;
+    timewarp_text = game.add.text(625, 550, "Time Warps:" + num_timewarp, { font: "24px Arial", fill: "#ff0044" });
+    timewarp_text.anchor.setTo(0.5, 0.5);
+
+    prompt_text = game.add.text(600, 24, "PROMPT AREA", { font: "24px Arial", fill: "#ff0044" });
+    prompt_text.anchor.setTo(0.5, 0.5);
 }
 
 function selected(sprite, pointer) {
@@ -54,18 +81,15 @@ function selected(sprite, pointer) {
 }
 
 function preload() {
-	// Load Assets
-	 game.load.image('background','assets/green_cup.png');
-	 game.load.spritesheet('marine', 'assets/marine.png', 30, 30);
-	 game.load.spritesheet('baneling', 'assets/baneling.png', 25, 25);
+     game.load.image('background','assets/green_cup.png');
+     game.load.spritesheet('marine', 'assets/marine.png', 30, 30);
      game.load.spritesheet('baneling', 'assets/baneling.png', 25, 25);
      game.load.spritesheet('boom', 'assets/explosion.png', 64, 64, 23);
 }
 
 function create() {
-	// Create Sprites
+
 	background = game.add.tileSprite(0, 0, 800, 600, 'background');
-    // game.world.setBounds(0, 0, 2000, 2000);
 
     marines = game.add.group();
     createMarines();
@@ -76,25 +100,63 @@ function create() {
     explosions = game.add.group();
     createExplosions();
 
-   
-    
-    cursors = game.input.keyboard.createCursorKeys();
+    createText();
+
+    // cursors = game.input.keyboard.createCursorKeys();
+
+    time_warp_button = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+    time_warp_button.onDown.add(timeWarp, this);
+
+    restart_button = game.input.keyboard.addKey(Phaser.Keyboard.ENTER)
+    restart_button.onDown.add(restart, this);
 }
 
+
+
 function banelingHitMarine(baneling, marine) {
+
+    baneling.kill();
+    marine.kill();
 
     var explosionAnimation = explosions.getFirstDead();
     explosionAnimation.reset(marine.x, marine.y);
     explosionAnimation.play('boom', 30, false, true);
 
-    baneling.kill();
-    marine.kill();
+    if (marines.countLiving() == 0) {
+        prompt_text.content = "GAME OVER";
+    }
+}
+
+function timeWarp() {
+    if(num_timewarp > 0) {
+        console.log("Time Warp should happen");
+
+        banelings.forEach(function(baneling) {
+            this.game.physics.moveToObject(baneling, marines, 25)
+        });
+
+        num_timewarp -= 1;
+        timewarp_text.content = "Time Warps:" + num_timewarp;
+    }  
+}
+
+function restart() {
+    console.log("Game should restart");
+}
+
+function update() {
+    game.physics.collide(marines);
+    // game.physics.overlap(banelings);
+    this.game.physics.overlap(marines, banelings, banelingHitMarine, null, this); 
+    this.game.physics.overlap(marines, explosions, banelingHitMarine, null, this); 
+
+}
+
+function render () {
+
 }
 
 
-function resetBaneling(baneling) {
-    baneling.kill();
-}
 
 function rightClick(marine) {
     if(game.input.mousePointer.isDown && game.input.mouse.button == 3) {
@@ -105,49 +167,4 @@ function rightClick(marine) {
     if (Phaser.Rectangle.contains(marine.body, clickedx, clickedy)) {
         marine.cursor.body.velocity.setTo(0, 0);
     }
-}
-
-function update() {
-	// Set Physics
-	// Write out Inputs Events
-    game.physics.collide(marines);
-    // game.physics.collide(banelings);
-    this.game.physics.overlap(marines, banelings, banelingHitMarine, null, this); 
-
-
-    if(game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR)) {
-        console.log("Time Warp should happen");
-    }
-
-    //Arrow Key Camera Controls
-	if (cursors.up.isDown) { 
-		game.camera.y -= 4; 
-	}
-    else if (cursors.down.isDown) { 
-    	game.camera.y += 4; 
-    }
-    if (cursors.left.isDown) { 
-    	game.camera.x -= 4; 
-    }
-    else if (cursors.right.isDown) { 
-    	game.camera.x += 4; 
-    }
-
-    // // Mouse Camera Controls
-    // if(game.input.mousePointer.x < game.width && game.input.mousePointer.x > game.width - 250) {
-    //  game.camera.x += 20;
-    // }
-    // else if(game.input.mousePointer.x > 0 && game.input.mousePointer.x < 250) {
-    //  game.camera.x -= 20;
-    // }
-    // if(game.input.mousePointer.y < game.height && game.input.mousePointer.y > game.height - 150) {
-    //  game.camera.y += 20;
-    // }
-    // else if(game.input.mousePointer.y > 0 && game.input.mousePointer.y < 150) {
-    //  game.camera.y -= 20;
-    // }
-}
-
-function render () {
-
 }

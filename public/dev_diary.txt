@@ -34,6 +34,24 @@ Problems
 -Directing banelings to move intelligently
 
 
+Day 3 
+
+What I did today
+
+-Added text for the start of the game
+-Worked on Time Warp Feature
+-Worked on restart button
+
+What I want to do
+
+-Not have Banelings overlap each other but still move towards the center
+
+-Implement Rounds
+-Implement Score over Game based on surviving Marines
+-Game Over State
+-Drag Select
+
+
 
 
 
