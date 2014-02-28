@@ -13,9 +13,7 @@ var round, score, num_timewarp;
 var time_warp_button, restart_button;
 
 
-
 function createMarines() {
-
     for(var y = 0; y < 4; y++) {
         for(var x = 0; x < 4; x++) {
             var marine = marines.create(x * 35, y * 35, 'marine');
@@ -36,7 +34,6 @@ function createMarines() {
 }
 
 function createBanelings() {
-
     banelings.createMultiple(100, 'baneling');  
     banelings.setAll('anchor.x', 0.5);
     banelings.setAll('anchor.y', 0.5);
@@ -46,12 +43,48 @@ function createBanelings() {
         var baneling = banelings.getFirstDead(); 
         baneling.reset(0, i * 30);
 
-        this.game.physics.moveToObject(baneling, marines, 50)
+        baneling.inputEnabled = true;
+        baneling.events.onKilled.add(checkNextRound, this)
+
+        this.game.physics.moveToObject(baneling, marines, 100)
     }
 }
 
-function createExplosions() {
+function checkNextRound() {
 
+    if (marines.countLiving() == 0) {
+        prompt_text.content = "GAME OVER";
+    }
+
+    if( banelings.countLiving() == 0 && marines.countLiving()  ) {
+        advanceRound();
+    }
+}
+
+function restart() {
+    console.log("Game should restart");
+    marines.removeAll();
+    banelings.removeAll();
+    explosions.removeAll();
+    destoryAllText();
+
+    createMarines();
+    createBanelings();
+    createExplosions();
+    createText();
+}
+
+function advanceRound() {
+    prompt_text.content = "Advanced to Next Round!";
+    round += 1;
+    score += marines.countLiving();
+
+    score_text.content = "Score: " + score;
+    round_text.content = "Round: " + round;
+
+}
+
+function createExplosions() {
     for (var i = 0; i < 4; i++) {
         var explosionAnimation = explosions.create(0, 0, 'boom', [0], false);
         explosionAnimation.anchor.setTo(0.5, 0.5);
@@ -74,6 +107,13 @@ function createText() {
 
     prompt_text = game.add.text(600, 24, "PROMPT AREA", { font: "24px Arial", fill: "#ff0044" });
     prompt_text.anchor.setTo(0.5, 0.5);
+}
+
+function destoryAllText() {
+    round_text.destroy();
+    score_text.destory();
+    timewarp_text.destory();
+    prompt_text.destory();
 }
 
 function selected(sprite, pointer) {
@@ -114,34 +154,21 @@ function create() {
 
 
 function banelingHitMarine(baneling, marine) {
-
     baneling.kill();
     marine.kill();
-
     var explosionAnimation = explosions.getFirstDead();
     explosionAnimation.reset(marine.x, marine.y);
     explosionAnimation.play('boom', 30, false, true);
-
-    if (marines.countLiving() == 0) {
-        prompt_text.content = "GAME OVER";
-    }
 }
 
 function timeWarp() {
     if(num_timewarp > 0) {
-        console.log("Time Warp should happen");
-
         banelings.forEach(function(baneling) {
-            this.game.physics.moveToObject(baneling, marines, 25)
+            this.game.physics.moveToObject(baneling, marines, 100/2)
         });
-
         num_timewarp -= 1;
         timewarp_text.content = "Time Warps:" + num_timewarp;
     }  
-}
-
-function restart() {
-    console.log("Game should restart");
 }
 
 function update() {
