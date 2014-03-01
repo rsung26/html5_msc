@@ -91,7 +91,7 @@ function restart() {
 
     // createText();
 
-    create();
+    // create();
 }
 
 
