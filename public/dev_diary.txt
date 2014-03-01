@@ -50,6 +50,26 @@ Problems
 
 Day 4
 
+What I want to do today
+
+-Implement code to mechanically restart/advance a round
+	-Control Flow between winning and losing a round
+	-First Implement a restart without winning round
+
+
+
+-Inclulde 5 second delay between rounds(countdown timer is a plus)
+
+-Include extra banelings per round to make the game harder
+-Reimplement how banelings move to a more spread out formation
+-Have banelings come from one of the four random corners of map
+
+-Consider working on Attack Range
+-Consider working on Drag Selecting
+
+Bugs:
+Using Time Warp after banelings have passed marines will make them move in the reverse direction
+Score does not compute correctly
 
 
 
