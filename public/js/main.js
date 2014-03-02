@@ -13,30 +13,38 @@ var clickedx, clickedy;
 
 
 
-
 function createMarines(row, col) {
+
+    marines.x = game.world.centerX - 70;
+    marines.y = game.world.centerY - 70; 
 
     for(var y = 0; y < col; y++) {
         for(var x = 0; x < row; x++) {
-            var marine = marines.create(x * 35, y * 35, 'marine');
-            marine.alpha = 0.5
+            var marine = marines.create(x * 35, y * 35 , 'marine');
+            marine.alpha = 0.5;
             marine.anchor.setTo(0.5, 0.5);
             marine.body.immovable = true;
 
             marine.inputEnabled = true;
             marine.input.enableDrag(false, true)
             marine.events.onInputDown.add(selected, this);
-        }
-    }   
 
-    marines.x = game.world.centerX - 70;
-    marines.y = game.world.centerY - 70;
+        }
+    }  
+
     marines.setAll('body.collideWorldBounds', true);
     marines.setAll('body.minBounceVelocity', 0);
 }
 
 function selected(sprite, pointer) {
     sprite.alpha = 1;
+    clickedx = pointer.x;
+    clickedy = pointer.y;
+
+}
+
+function test() {
+    console.log("mouse pressed");
 }
 
 function createBanelings(num_active) {
@@ -47,57 +55,62 @@ function createBanelings(num_active) {
     banelings.setAll('outOfBoundsKill', true);
 
     for(var i = 0; i < num_active; i ++) { 
+
         var baneling = banelings.getFirstDead(); 
-        baneling.reset(0, i * 30);
+        baneling.reset(50, i * 50);
 
-        baneling.inputEnabled = true;
-        baneling.events.onKilled.add(checkNextRound, this)
-
-        this.game.physics.moveToObject(baneling, marines, 100)
+        game.physics.moveToXY(baneling, game.world.centerX, game.world.centerY, 100);    
     }
 }
 
-// Num Explosions are equal to the number of active banelings on screen
 function createExplosions(num_explosions) {
 
     for (var i = 0; i < num_explosions; i++) {
         var explosionAnimation = explosions.create(0, 0, 'boom', [0], false);
         explosionAnimation.anchor.setTo(0.5, 0.5);
         explosionAnimation.animations.add('boom');
+
+        // explosionAnimation.events.onAnimationComplete.add(checkNextRound, this);
     }
 
 }
 
 function checkNextRound() {
 
-    if (marines.countLiving() == 0) {
-        prompt_content = "Restarting Round...";
-        restart();
-    }
-    else if( banelings.countLiving() == 0 && marines.countLiving() ) {
+    console.log("checkNextRound():" + banelings.countLiving() )
+
+    if( banelings.countLiving() == 0 && marines.countLiving()) {
         prompt_content = "Next Round...";
         advanceRound();
         restart();
     }
+    else {//(marines.countLiving() == 0) {}
+        prompt_content = "Restarting Round...";
+        restart();
+    }
+
 
 }
 
 function advanceRound() {
-    
-    console.log("advanceRound()");
-
     round += 1;
     score += marines.countLiving();
 }
 
+
 function restart() {
-    
-    console.log("restart()");
+    console.log("round should reset");
+
+    // marines.removeAll();
+    // createMarines(5,5);
+
 
     banelings.removeAll();
-    createBanelings(4);
-}
+    createBanelings(3 + round);
 
+    explosions.removeAll();
+    createExplosions(3 + round);
+}
 
 
 
@@ -128,14 +141,6 @@ function updateText() {
 
 }
 
-function destoryAllText() {
-    round_text.destroy();
-    score_text.destroy();
-    timewarp_text.destroy();
-    prompt_text.destroy();
-}
-
-
 
 function preload() {
      game.load.image('background','assets/green_cup.png');
@@ -149,7 +154,7 @@ function create() {
 	background = game.add.tileSprite(0, 0, 800, 600, 'background');
 
     marines = game.add.group();
-    createMarines(4, 4);
+    createMarines(5, 5);
 
     banelings = game.add.group();
     createBanelings(4);
@@ -159,37 +164,27 @@ function create() {
 
     createText();
 
-
-    // cursors = game.input.keyboard.createCursorKeys();
     time_warp_button = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
     time_warp_button.onDown.add(timeWarp, this);
 
     restart_button = game.input.keyboard.addKey(Phaser.Keyboard.ENTER)
-    restart_button.onDown.add(restart, this);
+    restart_button.onDown.add(checkNextRound, this);
 }
 
 
 
 function banelingHitMarine(baneling, marine) {
-    baneling.kill();
-    marine.kill();
-
     var explosionAnimation = explosions.getFirstDead();
     explosionAnimation.reset(marine.x, marine.y);
-    explosionAnimation.play('boom', 30, false, true);
+    explosionAnimation.play('boom', 60, false, true);
+
+    baneling.kill();
+    marine.kill();
 }
 
 
 
-function timeWarp() {
-    if(num_timewarp > 0) {
-        banelings.forEach(function(baneling) {
-            this.game.physics.moveToObject(baneling, marines, 100/2)
-        });
-        num_timewarp -= 1;
-        timewarp_text.content = "Time Warps:" + num_timewarp;
-    }  
-}
+
 
 function update() {
     game.physics.collide(marines);
@@ -197,6 +192,7 @@ function update() {
     this.game.physics.overlap(marines, explosions, banelingHitMarine, null, this); 
 
     updateText();
+
 }
 
 function render () {
@@ -204,21 +200,24 @@ function render () {
 }
 
 
-
-
-
-
-
-
-
+function timeWarp() {
+    if(num_timewarp > 0) {
+        banelings.forEach(function(baneling) {
+            game.physics.moveToXY(baneling, game.world.width, game.world.height, 50);
+        });
+        num_timewarp -= 1;
+    }  
+}
 
 function rightClick(marine) {
+
     if(game.input.mousePointer.isDown && game.input.mouse.button == 3) {
         game.physics.moveToPointer(marine, 400);
         clickedx = game.input.mousePointer.x;
         clickedy = game.input.mousePointer.y; 
     }
+
     if (Phaser.Rectangle.contains(marine.body, clickedx, clickedy)) {
-        marine.cursor.body.velocity.setTo(0, 0);
+        marine.body.velocity.setTo(0, 0);
     }
 }
