@@ -7,11 +7,6 @@ var round_text, score_text, prompt_text, timewarp_text;
 var round, score, prompt_content, num_timewarp;
 
 var time_warp_button, restart_button;
-var cursors;
-
-var clickedx, clickedy;
-
-
 
 function createMarines(row, col) {
 
@@ -38,13 +33,6 @@ function createMarines(row, col) {
 
 function selected(sprite, pointer) {
     sprite.alpha = 1;
-    clickedx = pointer.x;
-    clickedy = pointer.y;
-
-}
-
-function test() {
-    console.log("mouse pressed");
 }
 
 function createBanelings(num_active) {
@@ -66,7 +54,7 @@ function createBanelings(num_active) {
 function createExplosions(num_explosions) {
 
     for (var i = 0; i < num_explosions; i++) {
-        var explosionAnimation = explosions.create(0, 0, 'boom', [0], false);
+        var explosionAnimation = explosions.create(100, 0, 'boom', [0], false);
         explosionAnimation.anchor.setTo(0.5, 0.5);
         explosionAnimation.animations.add('boom');
 
@@ -84,7 +72,7 @@ function checkNextRound() {
         advanceRound();
         restart();
     }
-    else {//(marines.countLiving() == 0) {}
+    if (marines.countLiving() == 0) {
         prompt_content = "Restarting Round...";
         restart();
     }
@@ -102,14 +90,12 @@ function restart() {
     console.log("round should reset");
 
     // marines.removeAll();
-    // createMarines(5,5);
+    // createMarines(5,5);  
+    // banelings.removeAll();
+    // createBanelings(3 + round);
 
-
-    banelings.removeAll();
-    createBanelings(3 + round);
-
-    explosions.removeAll();
-    createExplosions(3 + round);
+    // explosions.removeAll();
+    // createExplosions(3 + round);
 }
 
 
@@ -176,7 +162,7 @@ function create() {
 function banelingHitMarine(baneling, marine) {
     var explosionAnimation = explosions.getFirstDead();
     explosionAnimation.reset(marine.x, marine.y);
-    explosionAnimation.play('boom', 60, false, true);
+    explosionAnimation.play('boom', 120, false, true);
 
     baneling.kill();
     marine.kill();
@@ -192,7 +178,6 @@ function update() {
     this.game.physics.overlap(marines, explosions, banelingHitMarine, null, this); 
 
     updateText();
-
 }
 
 function render () {
@@ -207,17 +192,4 @@ function timeWarp() {
         });
         num_timewarp -= 1;
     }  
-}
-
-function rightClick(marine) {
-
-    if(game.input.mousePointer.isDown && game.input.mouse.button == 3) {
-        game.physics.moveToPointer(marine, 400);
-        clickedx = game.input.mousePointer.x;
-        clickedy = game.input.mousePointer.y; 
-    }
-
-    if (Phaser.Rectangle.contains(marine.body, clickedx, clickedy)) {
-        marine.body.velocity.setTo(0, 0);
-    }
 }
