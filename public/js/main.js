@@ -47,7 +47,7 @@ function createBanelings(num_active) {
         var baneling = banelings.getFirstDead(); 
         baneling.reset(50, i * 50);
 
-        game.physics.moveToXY(baneling, game.world.centerX, game.world.centerY, 100);    
+        game.physics.moveToXY(baneling, game.world.centerX, game.world.centerY, 50);    
     }
 }
 
@@ -58,7 +58,7 @@ function createExplosions(num_explosions) {
         explosionAnimation.anchor.setTo(0.5, 0.5);
         explosionAnimation.animations.add('boom');
 
-        // explosionAnimation.events.onAnimationComplete.add(checkNextRound, this);
+        explosionAnimation.events.onAnimationComplete.add(checkNextRound, this);
     }
 
 }
@@ -90,12 +90,14 @@ function restart() {
     console.log("round should reset");
 
     // marines.removeAll();
-    // createMarines(5,5);  
-    // banelings.removeAll();
-    // createBanelings(3 + round);
+    marines.callAll('revive');
 
-    // explosions.removeAll();
-    // createExplosions(3 + round);
+    // createMarines(4,4);  
+    banelings.removeAll();
+    createBanelings(3 + round);
+
+    explosions.removeAll();
+    createExplosions(3 + round);
 }
 
 
@@ -140,7 +142,7 @@ function create() {
 	background = game.add.tileSprite(0, 0, 800, 600, 'background');
 
     marines = game.add.group();
-    createMarines(5, 5);
+    createMarines(4, 4);
 
     banelings = game.add.group();
     createBanelings(4);
@@ -174,6 +176,7 @@ function banelingHitMarine(baneling, marine) {
 
 function update() {
     game.physics.collide(marines);
+
     this.game.physics.overlap(marines, banelings, banelingHitMarine, null, this); 
     this.game.physics.overlap(marines, explosions, banelingHitMarine, null, this); 
 
@@ -188,7 +191,7 @@ function render () {
 function timeWarp() {
     if(num_timewarp > 0) {
         banelings.forEach(function(baneling) {
-            game.physics.moveToXY(baneling, game.world.width, game.world.height, 50);
+            game.physics.moveToXY(baneling, game.world.width, game.world.height, 25);
         });
         num_timewarp -= 1;
     }  
