@@ -1,17 +1,15 @@
 var game = new Phaser.Game(800, 600, Phaser.AUTO, 'game', { preload: preload, create: create, update: update, render: render });
 
-var background;
-var marines, banelings, explosions;
+var background, time_warp_button, forcefield_button;
+var marines, banelings, explosions, forcefields;
+var round_text, score_text, prompt_text, timewarp_text, forcefield_text;
+var round, score, prompt_content, num_timewarp, num_forcefield;
 
-var round_text, score_text, prompt_text, timewarp_text;
-var round, score, prompt_content, num_timewarp;
 
-var time_warp_button, restart_button;
+
+
 
 function createMarines(row, col) {
-
-    marines.x = game.world.centerX - 70;
-    marines.y = game.world.centerY - 70; 
 
     for(var y = 0; y < col; y++) {
         for(var x = 0; x < row; x++) {
@@ -21,14 +19,14 @@ function createMarines(row, col) {
             marine.body.immovable = true;
 
             marine.inputEnabled = true;
-            marine.input.enableDrag(false, true)
+            marine.input.enableDrag(false, true);
             marine.events.onInputDown.add(selected, this);
 
         }
     }  
-
+    marines.x = game.world.centerX - 70;
+    marines.y = game.world.centerY - 70; 
     marines.setAll('body.collideWorldBounds', true);
-    marines.setAll('body.minBounceVelocity', 0);
 }
 
 function selected(sprite, pointer) {
@@ -45,10 +43,27 @@ function createBanelings(num_active) {
     for(var i = 0; i < num_active; i ++) { 
 
         var baneling = banelings.getFirstDead(); 
-        baneling.reset(50, i * 50);
+        var rand = Math.floor((Math.random()*40)+1);
 
-        game.physics.moveToXY(baneling, game.world.centerX, game.world.centerY, 50);    
+        if( rand % 4 == 0 )
+            baneling.reset(game.world.randomX,0);
+        else if( rand % 4 == 1 )
+            baneling.reset(0,game.world.randomY);
+        else if( rand % 4 == 2 )
+            baneling.reset(800, game.world.randomY);
+        else
+            baneling.reset(game.world.randomX, 600);
+
+        game.physics.moveToXY(baneling, game.world.centerX, game.world.centerY, 80);    
+        baneling.events.onKilled.add(playExplosion, baneling);
     }
+}
+
+function playExplosion(baneling) {
+
+    var explosionAnimation = explosions.getFirstDead();
+    explosionAnimation.reset(baneling.x, baneling.y);
+    explosionAnimation.play('boom', 120, false, true);
 }
 
 function createExplosions(num_explosions) {
@@ -60,23 +75,55 @@ function createExplosions(num_explosions) {
 
         explosionAnimation.events.onAnimationComplete.add(checkNextRound, this);
     }
+}
+
+function createText() {
+
+    round = 1;
+    round_text = game.add.text(50, 25, "Round:" + round, 
+        { font: "24px Arial", fill: "#ff0044" });
+    round_text.anchor.setTo(0.5, 0.5);
+
+    score = 0;
+    score_text = game.add.text(200, 25, "Score:" + score, 
+        { font: "24px Arial", fill: "#ff0044" });
+    score_text.anchor.setTo(0.5, 0.5);
+
+    num_timewarp = 2;
+    timewarp_text = game.add.text(700, 575, "Time Warps:" + num_timewarp, 
+        { font: "24px Arial", fill: "#ff0044" });
+    timewarp_text.anchor.setTo(0.5, 0.5);
+
+    num_forcefield = 3;
+    forcefield_text = game.add.text(500, 575, prompt_content, 
+        { font: "24px Arial", fill: "#ff0044" });
+    forcefield_text.anchor.setTo(0.5, 0.5);
+
+    prompt_content = "";
+    prompt_text = game.add.text(650, 36, prompt_content, 
+        { font: "36px Arial", fill: "#ff0044" });
+    prompt_text.anchor.setTo(0.5, 0.5);
+}
+
+function updateText() {
+    score_text.content = "Score: " + score;
+    round_text.content = "Round: " + round;
+    timewarp_text.content = "Time Warps: " + num_timewarp;
+    forcefield_text.content = "Forcefields: " + num_forcefield;
+    prompt_text.content = prompt_content;
 
 }
 
 function checkNextRound() {
 
-    console.log("checkNextRound():" + banelings.countLiving() )
-
     if( banelings.countLiving() == 0 && marines.countLiving()) {
-        prompt_content = "Next Round...";
+        prompt_content = "Next Round!";
         advanceRound();
         restart();
     }
     if (marines.countLiving() == 0) {
-        prompt_content = "Restarting Round...";
-        restart();
+        prompt_content = "Game Over!";
     }
-
 
 }
 
@@ -85,48 +132,60 @@ function advanceRound() {
     score += marines.countLiving();
 }
 
-
 function restart() {
-    console.log("round should reset");
-
-    // marines.removeAll();
     marines.callAll('revive');
-
-    // createMarines(4,4);  
+    marines.setAll('alpha', 0.5)
+ 
     banelings.removeAll();
-    createBanelings(3 + round);
+    createBanelings(4 + round);
 
     explosions.removeAll();
-    createExplosions(3 + round);
+    createExplosions(4 + round);
+
+    forcefields.removeAll();
+    num_forcefield = 3;
 }
 
+function createForcefield() {
 
-
-
-function createText() {
-    round = 1;
-    round_text = game.add.text(50, 25, "Round:" + round, { font: "24px Arial", fill: "#ff0044" });
-    round_text.anchor.setTo(0.5, 0.5);
-
-    score = 0;
-    score_text = game.add.text(200, 25, "Score:" + score, { font: "24px Arial", fill: "#ff0044" });
-    score_text.anchor.setTo(0.5, 0.5);
-
-    num_timewarp = 3;
-    timewarp_text = game.add.text(625, 550, "Time Warps:" + num_timewarp, { font: "24px Arial", fill: "#ff0044" });
-    timewarp_text.anchor.setTo(0.5, 0.5);
-
-    prompt_content = "PROMPT AREA";
-    prompt_text = game.add.text(600, 24, prompt_content, { font: "24px Arial", fill: "#ff0044" });
-    prompt_text.anchor.setTo(0.5, 0.5);
+    if( num_forcefield > 0 ) {
+        var forcefield = forcefields.create(game.input.activePointer.x, game.input.activePointer.y, 'forcefield');
+        forcefield.anchor.setTo(0.5, 0.5);
+        forcefield.health = 5
+        num_forcefield -= 1;
+    }
 }
 
-function updateText() {
-    score_text.content = "Score: " + score;
-    round_text.content = "Round: " + round;
-    timewarp_text.content = "Time Warps: " + num_timewarp;
-    prompt_text.content = prompt_content;
+function timeWarp() {
+    
+    if(num_timewarp > 0) {
+        banelings.forEach(function(baneling) {
+            baneling.body.velocity.x = baneling.body.velocity.x/2;
+            baneling.body.velocity.y = baneling.body.velocity.y/2;
 
+        });
+        num_timewarp -= 1;
+    }  
+}
+
+function banelingHitMarine(baneling, marine) {
+
+    var explosionAnimation = explosions.getFirstDead();
+    explosionAnimation.reset(marine.x, marine.y);
+    explosionAnimation.play('boom', 120, false, true);
+
+    baneling.kill();
+    marine.kill();
+}
+
+function banelingHitForcefield(baneling, forcefield) {
+
+    baneling.kill();
+    forcefield.health -= 1;
+
+    if(forcefield.health == 0) {
+        forcefield.kill();
+    }
 }
 
 
@@ -135,6 +194,7 @@ function preload() {
      game.load.spritesheet('marine', 'assets/marine.png', 30, 30);
      game.load.spritesheet('baneling', 'assets/baneling.png', 25, 25);
      game.load.spritesheet('boom', 'assets/explosion.png', 64, 64, 23);
+     game.load.spritesheet('forcefield', 'assets/block.png', 95, 95)
 }
 
 function create() {
@@ -150,49 +210,28 @@ function create() {
     explosions = game.add.group();
     createExplosions(4);
 
+    forcefields = game.add.group();
+
     createText();
 
     time_warp_button = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
     time_warp_button.onDown.add(timeWarp, this);
 
-    restart_button = game.input.keyboard.addKey(Phaser.Keyboard.ENTER)
-    restart_button.onDown.add(checkNextRound, this);
+    forcefield_button = game.input.keyboard.addKey(Phaser.Keyboard.F)
+    forcefield_button.onDown.add(createForcefield, this); 
 }
-
-
-
-function banelingHitMarine(baneling, marine) {
-    var explosionAnimation = explosions.getFirstDead();
-    explosionAnimation.reset(marine.x, marine.y);
-    explosionAnimation.play('boom', 120, false, true);
-
-    baneling.kill();
-    marine.kill();
-}
-
-
-
 
 
 function update() {
+
     game.physics.collide(marines);
+    game.physics.collide(marines, forcefields);
 
     this.game.physics.overlap(marines, banelings, banelingHitMarine, null, this); 
     this.game.physics.overlap(marines, explosions, banelingHitMarine, null, this); 
+    this.game.physics.overlap(banelings, forcefields, banelingHitForcefield, null, this);
 
     updateText();
 }
 
-function render () {
-
-}
-
-
-function timeWarp() {
-    if(num_timewarp > 0) {
-        banelings.forEach(function(baneling) {
-            game.physics.moveToXY(baneling, game.world.width, game.world.height, 25);
-        });
-        num_timewarp -= 1;
-    }  
-}
+function render () { }
