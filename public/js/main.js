@@ -3,7 +3,7 @@ var game = new Phaser.Game(800, 600, Phaser.AUTO, 'game', { preload: preload, cr
 var background, time_warp_button, forcefield_button;
 var marines, banelings, explosions, forcefields;
 var round_text, score_text, prompt_text, timewarp_text, forcefield_text;
-var round, score, prompt_content, num_timewarp, num_forcefield;
+var round, score, prompt_content, num_timewarps, num_forcefields;
 
 
 
@@ -21,17 +21,15 @@ function createMarines(row, col) {
             marine.inputEnabled = true;
             marine.input.enableDrag(false, true);
             marine.events.onInputDown.add(selected, this);
-
         }
     }  
+
     marines.x = game.world.centerX - 70;
     marines.y = game.world.centerY - 70; 
     marines.setAll('body.collideWorldBounds', true);
 }
 
-function selected(sprite, pointer) {
-    sprite.alpha = 1;
-}
+function selected(sprite, pointer) { sprite.alpha = 1; }
 
 function createBanelings(num_active) {
 
@@ -89,13 +87,13 @@ function createText() {
         { font: "24px Arial", fill: "#ff0044" });
     score_text.anchor.setTo(0.5, 0.5);
 
-    num_timewarp = 2;
-    timewarp_text = game.add.text(700, 575, "Time Warps:" + num_timewarp, 
+    num_timewarps = 2;
+    timewarp_text = game.add.text(700, 575, "Time Warps:" + num_timewarps, 
         { font: "24px Arial", fill: "#ff0044" });
     timewarp_text.anchor.setTo(0.5, 0.5);
 
-    num_forcefield = 3;
-    forcefield_text = game.add.text(500, 575, prompt_content, 
+    num_forcefields = 3;
+    forcefield_text = game.add.text(500, 575, "Forcefields" + num_forcefields, 
         { font: "24px Arial", fill: "#ff0044" });
     forcefield_text.anchor.setTo(0.5, 0.5);
 
@@ -108,8 +106,8 @@ function createText() {
 function updateText() {
     score_text.content = "Score: " + score;
     round_text.content = "Round: " + round;
-    timewarp_text.content = "Time Warps: " + num_timewarp;
-    forcefield_text.content = "Forcefields: " + num_forcefield;
+    timewarp_text.content = "Time Warps: " + num_timewarps;
+    forcefield_text.content = "Forcefields: " + num_forcefields;
     prompt_text.content = prompt_content;
 
 }
@@ -121,10 +119,8 @@ function checkNextRound() {
         advanceRound();
         restart();
     }
-    if (marines.countLiving() == 0) {
+    if (marines.countLiving() == 0)        
         prompt_content = "Game Over!";
-    }
-
 }
 
 function advanceRound() {
@@ -143,28 +139,28 @@ function restart() {
     createExplosions(4 + round);
 
     forcefields.removeAll();
-    num_forcefield = 3;
+    num_forcefields = 3;
 }
 
 function createForcefield() {
 
-    if( num_forcefield > 0 ) {
+    if( num_forcefields > 0 ) {
         var forcefield = forcefields.create(game.input.activePointer.x, game.input.activePointer.y, 'forcefield');
         forcefield.anchor.setTo(0.5, 0.5);
         forcefield.health = 5
-        num_forcefield -= 1;
+        num_forcefields -= 1;
     }
 }
 
 function timeWarp() {
     
-    if(num_timewarp > 0) {
+    if(num_timewarps > 0) {
         banelings.forEach(function(baneling) {
             baneling.body.velocity.x = baneling.body.velocity.x/2;
             baneling.body.velocity.y = baneling.body.velocity.y/2;
 
         });
-        num_timewarp -= 1;
+        num_timewarps -= 1;
     }  
 }
 
@@ -183,10 +179,12 @@ function banelingHitForcefield(baneling, forcefield) {
     baneling.kill();
     forcefield.health -= 1;
 
-    if(forcefield.health == 0) {
+    if(forcefield.health == 0)
         forcefield.kill();
-    }
 }
+
+
+
 
 
 function preload() {
