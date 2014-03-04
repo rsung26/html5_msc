@@ -62,7 +62,7 @@ Html5Msc::Application.configure do
   config.assets.precompile += %w( main.js drag_select.js attack_range.js styles.css)
 
   config.serve_static_assets = true
-  config.action_dispatch.x_sendfile_header = ‘X-Accel-Redirect’
+  config.action_dispatch.x_sendfile_header = 'X-Accel-Redirect'
   config.assets.compile = true
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
