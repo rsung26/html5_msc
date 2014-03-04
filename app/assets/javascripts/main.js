@@ -6,8 +6,6 @@ var round_text, score_text, prompt_text, timewarp_text, forcefield_text;
 var round, score, prompt_content, num_timewarps, num_forcefields;
 
 
-
-
 function createMarines(row, col) {
 
     for(var y = 0; y < col; y++) {

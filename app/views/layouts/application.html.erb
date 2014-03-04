@@ -7,8 +7,12 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
-
-<%= yield %>
-
+<div class="container">
+	<a href="/">Home</a>
+	<a href="/game">PLAY</a>
+	<a href="/wip">Work In Progress</a>
+	<%= yield %>
+	<%= yield :js %>
+</div>
 </body>
 </html>

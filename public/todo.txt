@@ -1,57 +1,117 @@
-TITLE: The HTML5 Marine Split Challenge
-GOAL: Recreate the SC2 Arcade Map "Marine Split Challenge" as an HTML 5 browser game.
+Day 1
 
-FEATURES:
--Canvas
-  -Size is greater than the window size
+What I did
+-Implemented background and map size on canvas
+-Implemented basic camera controls for arrows and mouse
+-Implemented a single marine unit
+-Created a marine group with basic collisions with itself
 
--Units
-  -Can be Selected
-  -Can Move
-  -Can Attack (damage, range, animation, speed)
-  -Can Attack Move
-  -Has Health
-  -Types
-	-Marine: Ranged Instant Attack
-  	-Baneling
-	  -Melee range, dies on contact
-	  -Exploding AOE on death
+-Experimented with unit selection and right click movement
+-Played around with mutli group selection
 
--Inputs
-  -Mouse on Border: Move Camera in 8 possible directions
-  -Left Click: Select a Marine
-  -Hold Left Click and Release: Select one or more Marines
-  -Selected?
-  	-Right Click: Move Marine(s) to clicked location
-  	-A Key and Left Click: Attack Move Marnine(s)
+Problems I encountered 
+-Phaser's limiations on mouse controls and interactions
+-Mutliple selection on groups not working with intended solution
+-How to strucutre code: do I need a Marine Model?
 
--Game	
-  -Rounds: reset units and camera
-  -Score: keeps track of surviving Marines
-  -Prep Time: Increase/Decrease time before Banelings Attack
-  -Banelings spawn from one of four random positions
-		
-
-Technologies:
--HTML5/Javascript/CSS3
--Node or Rails Server
--PhaserJS Framework
+What I plan to accomplish today
+-Judgement Call: Do I restructure my specs to fit the technology in the framework?
+			
+				 Do I try to implemented a custom solution to satisfy specs?
 
 
-Benchmarks:
-	1. An Empty HTML Canvas that has camera movement
-	2. PNG assets to be used
-	3. Phase objects and Model Structure complete
 
-	4. A Single Unit with all properties on canvas
+Day 2
 
-	5. A Group of Units with specified properties on canvas
+What I did
+-Code Refactor for Marines
+-Researched on using Fabric.js to implement drag selection
+-implemented Banelings and Explosions group
+-Worked on basic collisions/interactions between banelings and marines
 
-	6. Marine/Baneling unit types established
-	7. Game related features implemented
-	--- Minimum Viable Product ---
+Problems
+-The judgement call on the important of drag selection 
+-Directing banelings to move intelligently
 
 
+Day 3 
+
+What I did today
+-Worked on displaying Game Status Text to Canvas
+-Implemented Time Warp Feature
+-Created skeleton for a reset and round advance feature
+-Drew out diagrams/algorithms for game
+
+Problems
+-Give a Delay Time of 5-10 seconds between rounds
+-Banelings not overlap each other but still move towards the center
+-Multiple Drag Select
+-Successfully resetting values on a round reset
+
+Day 4
+
+-Got stuck on dealing with round restart bug
+
+
+
+Day 6
+
+What I did
+-Experimented with Drag Selection/Right Click Move
+-Experimented on Attack Range
+
+-Readjusted project goals into a more realistic product given time constraints
+-Banelings now appear randomly from border of the map
+-Implemented forcefields mechanic
+
+Bugs:
+Game crashes sometimes when multiple explosions happen
+Background does not render on Firefox and Safari
+
+
+Day 7
+
+-Gathered user feedback through playtesting
+
+-Resolve background bug on different browsers
+-Resolve performance issues in Firefox
+
+-Add an Intro page which explains the rules
+-Add a Coming Soon/WIP page showcasing extra features
+
+-Change forcefields to a blue bubble image
+-Add a screen blur/flicker when Time Warp is used
+
+-Add Link to Portfolio Site
+-Write the README
+
+
+Extra
+-Add Timewarp/Forcefield button for mobile
+-Consider adding a fullscreen mode
+-Users and High Scores Database
+
+
+
+Feedback
+
+Site Changes
+-Add an Intro page which explains the rules x
+-Users and High Scores
+
+Cosmetic Changes
+-Give Forcefields a blue circle image x
+-Screen wide Time Warp effect x
+
+
+Balance Changes 
+-Deadzones at the top/bottom middle make the game too easy x
+	-Randomize baneling destination
+	-Have marines not revive, and increase num exponentially based on that
+
+-Opinions: Time warp a temporary effect? Forcefields a crutch? Baneling Speed too fast?
+-More powerups, game modes
+Bug: Game over sometimes still happens when one unit left
 
 
 
