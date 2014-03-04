@@ -72,13 +72,14 @@ Background does not render on Firefox and Safari
 Day 7
 
 -Gathered user feedback through playtesting
+-Change forcefields to a blue bubble image
 
 -Resolve background bug on different browsers
 -Resolve performance issues in Firefox
 
 
 
--Change forcefields to a blue bubble image
+
 -Add a screen blur/flicker when Time Warp is used
 
 -Edit content on pages and add more CSS stylings/animations
