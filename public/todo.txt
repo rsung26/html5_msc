@@ -76,11 +76,12 @@ Day 7
 -Resolve background bug on different browsers
 -Resolve performance issues in Firefox
 
--Add an Intro page which explains the rules
--Add a Coming Soon/WIP page showcasing extra features
+
 
 -Change forcefields to a blue bubble image
 -Add a screen blur/flicker when Time Warp is used
+
+-Edit content on pages and add more CSS stylings/animations
 
 -Add Link to Portfolio Site
 -Write the README
