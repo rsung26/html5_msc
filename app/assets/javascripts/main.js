@@ -156,8 +156,6 @@ function timeWarp() {
         banelings.forEach(function(baneling) {
             baneling.body.velocity.x = baneling.body.velocity.x/2;
             baneling.body.velocity.y = baneling.body.velocity.y/2;
-
-            baneling.loadTexture('baneling-slow', 0);
             baneling.body.angularVelocity = 100;
         });
         num_timewarps -= 1;
@@ -193,7 +191,6 @@ function preload() {
     game.load.image('background','assets/green_cup.png', 256, 256);
     game.load.spritesheet('marine', 'assets/marine.png', 30, 30);
     game.load.spritesheet('baneling', 'assets/baneling.png', 25, 25);
-    game.load.spritesheet('baneling-slow', 'assets/baneling-slow.png', 25, 25);
     game.load.spritesheet('boom', 'assets/explosion.png', 64, 64, 23);
     game.load.spritesheet('forcefield', 'assets/forcefield.png', 100, 87)
 
