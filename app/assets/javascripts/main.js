@@ -188,11 +188,11 @@ function banelingHitForcefield(baneling, forcefield) {
 
 
 function preload() {
-    game.load.image('background','assets/green_cup.png', 256, 256);
-    game.load.spritesheet('marine', 'assets/marine.png', 30, 30);
-    game.load.spritesheet('baneling', 'assets/baneling.png', 25, 25);
-    game.load.spritesheet('boom', 'assets/explosion.png', 64, 64, 23);
-    game.load.spritesheet('forcefield', 'assets/forcefield.png', 100, 87)
+    game.load.image('background','public/assets/green_cup.png', 256, 256);
+    game.load.spritesheet('marine', 'public/assets/marine.png', 30, 30);
+    game.load.spritesheet('baneling', 'public/assets/baneling.png', 25, 25);
+    game.load.spritesheet('boom', 'public/assets/explosion.png', 64, 64, 23);
+    game.load.spritesheet('forcefield', 'public/assets/forcefield.png', 100, 87)
 
 
 }
