@@ -132,7 +132,7 @@ function restart() {
  
     var more_banelings = 4 + round + marines.countDead();
 
-    baneling_speed += 5;
+    baneling_speed += marines.countDead();
     banelings.removeAll();
     createBanelings(more_banelings, baneling_speed);
 
