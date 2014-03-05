@@ -1,22 +1,57 @@
-<h1>An HTML5 game based on the Marine Split Challenge</h1>
 
-<h2>About</h2>
-<p>This project was created as the third week-long project of the General Assembly WDI course. It is an HTML5 game on canvas using Phaser as a framework. It is based on many ideas from the real time strategy game Starcraft 2 </p>
+<div class="text-center">
+	<h2>About</h2>
+	<p>This project was created as the third week-long project of the General Assembly WDI course.</p>
+	<p>This HTML5 game uses the Phaser framework to build an arcade style micro challenge map. Based on many ideas from the real time strategy game Starcraft 2.</p>
+	<p><strong>note:</strong> Run best on Google Chrome.</p>
+	
+	<form action="/game">
+		<input class="center-block btn btn-lg btn-primary" type="submit" value="PLAY NOW">
+	</form>
+</div>
 
-<h2>Objective</h2>
-	<p>Keep as many Marines alive each round as possible</p>
+<div class="col-md-5">
+	<h2>Objective</h2>
+	<p>Banelings will swarm in from all directions. You must control your marines and abilites to keep them alive. Gain points per round for each number of surviving marines.</p>
 
-<h2>Units</h2>
-	<p>Banelings: Green critters that explode on contact. Avoid these!</p>
-	<p>Marines: The good guys. Don't let them get hit by banelings.</p>
+	<h2>Controls</h2>
+	<ul>
+		<li><strong>Mouse: </strong>Select and Drag individual Marines.</li>
+		<li><strong>F key: </strong>Cast Forcefield at the cursor's locaton.</li>
+		<li><strong>Spacebar: </strong>Time Warp</li>
+	</ul>
+</div>
 
-<h2>Abilities</h2>
-	<p>Forcefield: Given 3 per round. These can block up to five banelings.</p>
-	<p>Time Warp: Global Ability. Slow down all baneling by 50%</p>
+<div class="col-md-7">
+	<div class="col-md-12">
+		<h2>Units</h2>
+		<div class="col-md-6">
+			<span>
+				<strong>Banelings: </strong>
+				<img src="baneling.png" alt="baneling">
+			</span>
+			<p>Green critters. Explode on contact. Avoid these!</p>
+		</div>
+		<div class="col-md-6">
+			<span>
+				<strong>Marines: </strong>
+				<img src="marine.png" alt="marine">
+			</span>
+			<p>The Good Guys. Keep them alive at all costs.</p>	
+		</div>
+	</div>
 
-<h2>Controls</h2>
-<ul>
-	<li>Mouse: Select and Drag a Marine</li>
-	<li>F key: Cast Forcefield. Placed at your cursor's current position</li>
-	<li>Spacebar: Activate Time Warp</li>
-</ul>
+	<div class="col-md-12">
+		<h2>Abilities</h2>
+		<div class="col-md-3">
+			<img src="forcefield.png" alt="forcefield">
+		</div>
+		<strong>Forcefield: Point Cast.</strong>
+		<p>Can block at most 5 banelings. Given 3 every round.</p>
+		<strong>Time Warp: Global.</strong>
+		<p>Slow down all banelings by 50%. Given only 2 per game.</p>
+	</div>
+</div>
+
+
+

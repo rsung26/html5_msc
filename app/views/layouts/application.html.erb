@@ -2,15 +2,30 @@
 <html>
 <head>
   <title>HTML5 Marine Split Challenge</title>
+  <link rel="shortcut icon" href="/favicon.ico/"/>
   <%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
   <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
   <%= csrf_meta_tags %>
 </head>
 <body>
+
+	<div class="navbar navbar-default navbar-inverse">
+		<div class="container">
+			<div class="navbar-header">
+				<a class="navbar-brand" href="/">HTML5 Marine Split Challenge</a>
+			</div>
+			
+			<ul class="nav navbar-nav">
+				<li><a href="game">Play the Game</a></li>
+				<li><a href="/wip">Coming Soon</a></li>
+			</ul>
+
+		</div>
+	</div>
+
+
 	<div class="container">
-		<a href="/">Home</a>
-		<a href="/game">Play</a>
-		<a href="/wip">Work In Progress</a>
+			
 		<%= yield %>
 		<%= yield :js %>
 	</div>

@@ -4,6 +4,7 @@ var background, time_warp_button, forcefield_button;
 var marines, banelings, explosions, forcefields;
 var round_text, score_text, prompt_text, timewarp_text, forcefield_text;
 var round, score, prompt_content, num_timewarps, num_forcefields;
+var baneling_speed;
 
 
 function createMarines(row, col) {
@@ -28,7 +29,7 @@ function createMarines(row, col) {
 
 function selected(sprite, pointer) { sprite.alpha = 1; }
 
-function createBanelings(num_active) {
+function createBanelings(num_active, speed) {
 
     banelings.createMultiple(100, 'baneling');  
     banelings.setAll('anchor.x', 0.5);
@@ -49,7 +50,7 @@ function createBanelings(num_active) {
         else
             baneling.reset(game.world.randomX, 600);
 
-        game.physics.moveToXY(baneling, game.world.randomX, game.world.randomY, 60);    
+        game.physics.moveToXY(baneling, game.world.randomX, game.world.randomY, speed);    
         baneling.events.onKilled.add(playExplosion, baneling);
     }
 }
@@ -75,7 +76,7 @@ function createExplosions(num_explosions) {
 function createText() {
 
     round = 1;
-    round_text = game.add.text(50, 25, "Round:" + round, 
+    round_text = game.add.text(75, 25, "Round:" + round, 
         { font: "24px Arial", fill: "#ff0044" });
     round_text.anchor.setTo(0.5, 0.5);
 
@@ -86,12 +87,12 @@ function createText() {
 
     num_timewarps = 2;
     timewarp_text = game.add.text(700, 575, "Time Warps:" + num_timewarps, 
-        { font: "24px Arial", fill: "#0061d8" });
+        { font: "24px Arial", fill: "#000000" });
     timewarp_text.anchor.setTo(0.5, 0.5);
 
     num_forcefields = 3;
     forcefield_text = game.add.text(500, 575, "Forcefields" + num_forcefields, 
-        { font: "24px Arial", fill: "#0061d8" });
+        { font: "24px Arial", fill: "#000000" });
     forcefield_text.anchor.setTo(0.5, 0.5);
 
     prompt_content = "";
@@ -129,11 +130,14 @@ function restart() {
     // marines.callAll('revive');
     marines.setAll('alpha', 0.5)
  
+    var more_banelings = 4 + round + marines.countDead();
+
+    baneling_speed += 5;
     banelings.removeAll();
-    createBanelings(4 + round);
+    createBanelings(more_banelings, baneling_speed);
 
     explosions.removeAll();
-    createExplosions(4 + round);
+    createExplosions(more_banelings);
 
     forcefields.removeAll();
     num_forcefields = 3;
@@ -145,7 +149,7 @@ function createForcefield() {
         var forcefield = forcefields.create(game.input.activePointer.x, game.input.activePointer.y, 'forcefield');
         forcefield.anchor.setTo(0.5, 0.5);
         forcefield.health = 5
-        forcefield.body.angularVelocity = 50;
+        forcefield.body.angularVelocity = 25;
         num_forcefields -= 1;
     }
 }
@@ -186,27 +190,25 @@ function banelingHitForcefield(baneling, forcefield) {
 
 
 
-
 function preload() {
     game.load.image('background','green_cup.png', 256, 256);
     game.load.spritesheet('marine', 'marine.png', 30, 30);
     game.load.spritesheet('baneling', 'baneling.png', 25, 25);
     game.load.spritesheet('boom', 'explosion.png', 64, 64, 23);
     game.load.spritesheet('forcefield', 'forcefield.png', 100, 87)
-
-
 }
 
 function create() {
 
-	background = game.add.tileSprite(0, 0, 800, 600, 'background');
-    // background = game.stage.backgroundColor = '#a3a3a3';
+	// background = game.add.tileSprite(0, 0, 800, 600, 'background');
+    background = game.stage.backgroundColor = '#cdb864';
 
     marines = game.add.group();
     createMarines(4, 4);
 
+    baneling_speed = 75;
     banelings = game.add.group();
-    createBanelings(4);
+    createBanelings(4, baneling_speed);
 
     explosions = game.add.group();
     createExplosions(4);

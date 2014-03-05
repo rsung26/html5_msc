@@ -1,28 +1,17 @@
-== README
+#General Assembly WDI Final Project
+##GA-NLP: HTML5 Marine Split Challenge
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Check out the site here: http://html5-msc.herokuapp.com/
 
-Things you may want to cover:
+###About this Project
 
-* Ruby version
+This HTML5 game uses the Phaser framework to build an arcade style micro challenge map. Based on many ideas from arcade map Marine Split Challenge and Starcraft 2. Runs best on Google Chrome.
 
-* System dependencies
+###Getting Started
 
-* Configuration
+To start playing, feel free to visit the website. This game was built using Phaser 1.1.6.
 
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
-
-
-Please feel free to use a different markup language if you do not plan to run
-<tt>rake doc:app</tt>.
+###Technolgies Used
+* Phaser HTML5 Game Framework
+* Ruby on Rails
+* Twitter Bootstrap

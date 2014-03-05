@@ -1,4 +1,4 @@
-var game = new Phaser.Game(800, 600, Phaser.AUTO, 'drag-select', { preload: preload, create: create, update: update, render: render });
+var game = new Phaser.Game(800, 300, Phaser.AUTO, 'drag-select', { preload: preload, create: create, update: update, render: render });
 
 var background;
 var marines;
@@ -68,13 +68,16 @@ function rightClickMove(marine) {
 
 
 function preload() {
-     game.load.image('background','assets/green_cup.png');
-     game.load.spritesheet('marine', 'assets/marine.png', 30, 30);
+     game.load.image('background','green_cup.png');
+     game.load.spritesheet('marine', 'marine.png', 30, 30);
 }
 
 function create() {
 
-	background = game.add.tileSprite(0, 0, 800, 600, 'background');
+	// background = game.add.tileSprite(0, 0, 800, 600, 'background');
+    background = game.stage.backgroundColor = '#cdb864';
+
+
 	marines = [];
 
     for (var i = 0; i < 16; i++) {

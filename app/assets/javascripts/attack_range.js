@@ -21,13 +21,14 @@ function Marine2(x, y) {
 
 
 function preload() {
-	game_two.load.image('background','assets/green_cup.png');
-	game_two.load.spritesheet('marine', 'assets/marine.png', 30, 30);
-	game_two.load.spritesheet('baneling', 'assets/baneling.png', 25, 25);
+	game_two.load.image('background','green_cup.png');
+	game_two.load.spritesheet('marine', 'marine.png', 30, 30);
+	game_two.load.spritesheet('baneling', 'baneling.png', 25, 25);
 }
 
 function create() {
-	background = game_two.add.tileSprite(0, 0, 800, 300, 'background');
+	// background = game_two.add.tileSprite(0, 0, 800, 300, 'background');
+	background = game_two.stage.backgroundColor = '#cdb864';
 
 	marine2 = new Marine2(600, 250);
 

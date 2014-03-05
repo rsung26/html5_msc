@@ -34,7 +34,7 @@ FEATURES:
 
 Technologies:
 -HTML5/Javascript/CSS3
--Node or Rails Server
+-Rails Server
 -PhaserJS Framework
 
 
@@ -49,4 +49,3 @@ Benchmarks:
 
 	6. Marine/Baneling unit types established
 	7. Game related features implemented
-	--- Minimum Viable Product ---

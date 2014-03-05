@@ -71,24 +71,17 @@ Background does not render on Firefox and Safari
 
 Day 7
 
+What I did today
 -Gathered user feedback through playtesting
 -Change forcefields to a blue bubble image
-
+-Add screen effect when Time Warp is used
 -Resolve background bug on different browsers
--Resolve performance issues in Firefox
-
-
-
-
--Add a screen blur/flicker when Time Warp is used
-
 -Edit content on pages and add more CSS stylings/animations
-
 -Add Link to Portfolio Site
 -Write the README
 
 
-Extra
+Bonus Features
 -Add Timewarp/Forcefield button for mobile
 -Consider adding a fullscreen mode
 -Users and High Scores Database
@@ -113,8 +106,3 @@ Balance Changes
 
 -Opinions: Time warp a temporary effect? Forcefields a crutch? Baneling Speed too fast?
 -More powerups, game modes
-Bug: Game over sometimes still happens when one unit left
-
-
-
-
